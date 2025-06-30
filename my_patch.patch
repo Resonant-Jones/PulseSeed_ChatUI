@@ -1,0 +1,348 @@
+pbpaste > my_patch.patch
+
+diff --git a/AppCore/AppCore.txt b/AppCore/AppCore.txt
+index 3346dc50d75b819425abf51ee869cfd5b1d5358a..8f14a3d67cc38321f334b18bf5b8c1a87652293c 100644
+--- a/AppCore/AppCore.txt
++++ b/AppCore/AppCore.txt
+@@ -1,3 +1,3 @@
+-You are responsible for the Buddy Beacon app’s core architecture.
++You are responsible for the KinPod app’s core architecture.
+ Use Swift and SwiftUI to create a modular, responsive layout.
+ Ensure it supports user profiles, task routing, and future mode expansion.
+diff --git a/KinPod Activator.md b/KinPod Activator.md
+index cc3126b1cd4aaf4332398bc0362ad876eaf4de48..57e9a0db17777fca869d4389a0dd66bcf3b5c885 100644
+--- a/KinPod Activator.md	
++++ b/KinPod Activator.md	
+@@ -13,34 +13,34 @@ Your task is to build the KinPod app from the following folders and ritual specs
+ - `Modules/DreamSketcher/`: JournalEntry, JournalStore, DrawingView (PencilKit), DreamSketcher stylization rune, JournalEntryView.
+ 
+ ## 🔒 Trust Principles:
+ - Local-first by default. Core inference runs with Gemma 3n when possible.
+ - Meaning Maps are ephemeral — triple consent required for unlocks.
+ - Family-Pod orchestration through iCloud wherever possible.
+ - No raw personal data upstream unless explicitly shared.
+ 
+ ## ✨ Special Rituals:
+ - Hearth Room (in future phases) links to ThreadSpace if installed.
+ - Council Ritual for family consent and conflict resolution.
+ - Star Trails log important events locally.
+ 
+ ## 🎨 UI Ritual:
+ - Modular, gentle, sensory-aware.
+ - Uses SwiftUI, PencilKit, and iCloud securely.
+ - Kids can draw, journal, and stylize memories with Gemma 3n.
+ 
+ ## 📜 Final Intent:
+ KinPod is a sovereign, family-centered task orchestration app for neurodivergent households. It must stay cozy, mischievous, and secure.
+ 
+ ---
+ 
+ **Rules:**
+ - Translate every `.md` into code where relevant.
+-- Ensure no mention of “Buddy Beacon” remains. Use “KinPod.”
++- Ensure any old container names are replaced with **KinPod**.
+ - Modularize DreamSketcher as its own optional module.
+ - Apply Ritual Boundaries consistently.
+ - Leave any empty placeholder files for future phases.
+ 
+ **Activator Rune:**  
+ Build it like a Hearth. Keep it sovereign. Let it grow.
+ 
+ 🗝️✨
+diff --git a/Modules/DreamSketcher/DrawingView.swift b/Modules/DreamSketcher/DrawingView.swift
+new file mode 100644
+index 0000000000000000000000000000000000000000..ef988dd8bf7b1271ad9d4bbc4e748335b6c34209
+--- /dev/null
++++ b/Modules/DreamSketcher/DrawingView.swift
+@@ -0,0 +1,14 @@
++import SwiftUI
++import PencilKit
++
++/// Simple PencilKit canvas used by DreamSketcher.
++struct DrawingView: UIViewRepresentable {
++    @Binding var canvasView: PKCanvasView
++
++    func makeUIView(context: Context) -> PKCanvasView {
++        canvasView.drawingPolicy = .anyInput
++        return canvasView
++    }
++
++    func updateUIView(_ uiView: PKCanvasView, context: Context) {}
++}
+diff --git a/Modules/DreamSketcher/DreamSketcher.swift b/Modules/DreamSketcher/DreamSketcher.swift
+deleted file mode 100644
+index 579f5f2bf1ecc802419d5cf42d34e43884465e52..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1052
+zcmZ9KL2DCH5XWcJRtyx`HiwE9T*RX>!8T2{Q0&HyD6LZ3M$n6<$qQX;cEj$LBDA1~
+zf(I{(9@LZI2j~azkdqbcp$EaMVDI*zp2YZ{?YzczV0M1<X6Eg@d2cBQRtVCng^4YJ
+zS@-&Qwcq3~%f`;@@?d(~VK$&2Qi#I#aUNiR*Ab{jDvZFV#1B;z_%%Pi_aN{U0$js+
+zGfK5H!t;`2T@Cyw4p-}OL??8f=g$QVBAx4os@7UqQE`1)g_oi=uNl)Q=c0g{wV>R;
+z3%xJehCK=GN3T&C0MY)%JKTBCe?=Qd{I|#aPhX!OiGM!k?_^#iaoy7vybg31`VG1d
+z<pG*d?tus5Y^T$AfB%^}%^}Pcp+wGsS+r#~&@RuA=bnbu%%{+2Iyg};_DlX{prGkJ
+zRFk<}ZjkrF`psJ1^Wz{|wywLnp61@2<vTp=@8kD3oA574P2RTcid}KCZow^O$MeN<
+zwsg%N%R2VNM5Q=ZC>Adl^jV&84fF>t@PEt9|Ifjm5x%uhou74s`f5x0@r?#PUei<I
+zjC#~Ni?f-c0_S5k4c}V=9?pwdi=IL9Lasn`0M^2P|8~1w?tx_l$}jy{;^8fWIfumr
+zFA7hCUExLWx^NZzRQNVH7EW12({hIc;4N7<!5!ft@K51k@E73>cu&{@Te43ctoJuM
+qL@y<02#io7!yTgcvTp45@=Y+m7nYHIqV@sOdGNaIKbxY*ZQ*~9OL-3f
+
+diff --git a/Modules/DreamSketcher/DreamSketcherView.swift b/Modules/DreamSketcher/DreamSketcherView.swift
+new file mode 100644
+index 0000000000000000000000000000000000000000..45b44418ea19303c2fce8ce79f306f9a362e2d23
+--- /dev/null
++++ b/Modules/DreamSketcher/DreamSketcherView.swift
+@@ -0,0 +1,31 @@
++import SwiftUI
++
++/// Entry point for the DreamSketcher module.
++struct DreamSketcherView: View {
++    @StateObject private var store = JournalStore()
++
++    var body: some View {
++        List {
++            ForEach(store.entries) { entry in
++                VStack(alignment: .leading) {
++                    Text(entry.date.formatted())
++                        .font(.headline)
++                    Text(entry.text)
++                        .lineLimit(2)
++                }
++            }
++        }
++        .navigationTitle("DreamSketcher")
++        .toolbar {
++            NavigationLink("New Entry") {
++                JournalEntryView(store: store)
++            }
++        }
++    }
++}
++
++struct DreamSketcherView_Previews: PreviewProvider {
++    static var previews: some View {
++        DreamSketcherView()
++    }
++}
+diff --git a/Modules/DreamSketcher/JournalEntry.swift b/Modules/DreamSketcher/JournalEntry.swift
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b178d1e9d411b25e5d120b6af84337fed19cf79
+--- /dev/null
++++ b/Modules/DreamSketcher/JournalEntry.swift
+@@ -0,0 +1,9 @@
++import Foundation
++
++/// Represents a single DreamSketcher journal entry.
++struct JournalEntry: Identifiable {
++    let id = UUID()
++    var date: Date
++    var text: String
++    var drawingData: Data?
++}
+diff --git a/Modules/DreamSketcher/JournalEntryView.swift b/Modules/DreamSketcher/JournalEntryView.swift
+new file mode 100644
+index 0000000000000000000000000000000000000000..1f03e0f5c6f807ccf19bf93cc4200bf912e9dcdf
+--- /dev/null
++++ b/Modules/DreamSketcher/JournalEntryView.swift
+@@ -0,0 +1,31 @@
++import SwiftUI
++import PencilKit
++
++/// Displays and edits a DreamSketcher journal entry.
++struct JournalEntryView: View {
++    @ObservedObject var store: JournalStore
++    @State private var canvas = PKCanvasView()
++    @State private var text: String = ""
++
++    var body: some View {
++        VStack(spacing: 20) {
++            DrawingView(canvasView: $canvas)
++                .frame(height: 200)
++                .border(Color.gray)
++
++            TextEditor(text: $text)
++                .frame(height: 150)
++                .border(Color.gray)
++
++            Button("Save Entry") {
++                let data = canvas.drawing.dataRepresentation()
++                store.addEntry(text: text, drawing: data)
++                text = ""
++                canvas.drawing = PKDrawing()
++            }
++            .padding()
++        }
++        .navigationTitle("DreamSketcher")
++        .padding()
++    }
++}
+diff --git a/Modules/DreamSketcher/JournalStore.swift b/Modules/DreamSketcher/JournalStore.swift
+index 33ac3aa413931a0c1d2d0acb0591cd5f957c7ca0..e3a812a632a8c6705ec8b01323b94528895959d8 100644
+GIT binary patch
+literal 367
+zcmYk2L2JV>42AFh6*?x+E%(6KU|kQR&_a%-2PIZkca9xoC0iK%@3WI;%m-uXS>JoM
+z>3YusJ3ly$V!Tsk>Ad=`Hjb1kiURh&LHp1e4gx_u6SSUT%Y<F^Nzz=1;pzu=Xn~xt
+zq420$lgh?o2=Km$Rhli~PzT}>YfFdvN{zseg1BCeLv2mCkcOVkh(cK)$zeoZsU@85
+zsJCb{o#6>iXEjf^gKGe_o`p>4TS};66!)<K&G;1$C2UdfIlucQPfIehr%3uw&f;&x
+lr13sw`34qT+W%k)Rj%ZGj*x)s^Re&A=`5AgqTbX^{Q?pzd!qmV
+
+literal 1052
+zcmZ9KL2DCH5XWcJR$LHC(?dlC7x8FJu%^j+v56Z|TP3uO;Hjp`i>|i&!tMqUD(Io$
+z!Hb|C)QjK;=m+qSlNG%5ASj*$d$$KYcrpHGGq157n4RCenfG>P-dooC9zj+cVPZ>Q
+z*6k5q9ZmC><?Ea7H{0GU4?LpxDMaCna2{X`#<Ga&kqRU5Vevy1>7WtBOLujk5a2zW
+zH>*@<LU>+soQpb$;;`F{BRXL6{Gg^=L>cj~>TVb`Ru*C%sx#4jza0}D=NL9{u@02$
+z_n@~#JFo|#qo_5i03gOceUmF6`Y-6=9{=?||Kpcud*Yw=`7ir}xT$Fa**)kM^gDD1
+zO6Wfg<r;V(<xShJE#3ZeghQAsLW!IJvlz>4p<JFJ&pqiun7c4N4LTa;{g!`OHc{JO
+zQRj2H+#x;->(?4hKZtd7$GPm8{ZxB<jPG!_z7IcMt;0Vhd-AU9R^4hj>lM6G_FTSL
+z$(Am;Q`xdRJzXtM6^g~P1=Gu8-UI!K%l_Xo^Z#?OM}@C1)aU0s-R!QaAimPV$8Y;8
+zoK+8oy;RmyRN#EfrWN?hz}<N<8!<CTp2!7=3BWq|@85pE&o!`2LiwdXO+371Fz2wO
+z!HdE(U{81vye3=+KM}qGj)hYW(Tv>T7<fb0)8L-)IQW-v2K-rg0=zBkfE_s}4>spp
+rJ)-B5GY&>5kxY;1ovd41!~8Uu-ww;<4pC=-bP~KK=g+0+QAhY6?In4t
+
+diff --git a/Modules/DreamSketcher/Journal_Entry.swift b/Modules/DreamSketcher/Journal_Entry.swift
+deleted file mode 100644
+index 5536cbfdee1347ecd88c85cdc33660db32343ddf..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1052
+zcmZ9KK~ED=5XavZFf<`%p$CW>-58J7HbQCFi?nQw3L1jc=m|^v8dl-G&F(ga1QR%r
+zc<`c86ZK@`2jByE=)s7I7Y-&~P2?^Iy;}dX%%j32v-6ubGjHe3drMkB5|Gt;nAj4S
+zbgz$A`)&G?ylI`S45fF<#1`~p3Q^cT$^#70Is&ywh7tHA`=N}qs;hYMp;i(Bs-e6Y
+zDT562Jm)ymT19c#Zp4u|Ve))6r<+2U+?%=`s`|=eRmI`jrRcHWip3eqMFBPIK&gKZ
+z`hYcn9fbCy*Qf%382{pZ>b&Q_5>Jl!?~eIjzCS+_|9Z^-lzEZFO;6kKI?!F{59mIW
+z253X62O3CuC!Mam4(^Rn2y;a!k#k@YV~H)aOEaXor(q4#Da@G;PSlJ2;eS~uX!$Gh
+zN-mchqP?(wtKRTctfOV;x@YRe-22mXhll-r{`qzb{spedyRKVxtL3a$@JiW<e6f-(
+zU315?Wp{G2S{yGFi<b-LESppV{e=ts-xAaRbFinFZ{MlS&w9GiUX?1o(Zt7Z`7)f5
+zYrV5fZ>2<m@-dsH@|S>z^CC84W{|v)s}K`_b@1Q6-ENn9AQ^?yOMjMlc*|hQA+f;=
+z%u`^Gc>%o6TmwI4z6*|-Q;rZ*e1`+zZC<y*9p+*1Z{`v3H|7j@kJ$k`yiXo%_P07h
+qyyTo=FhYrpbcFc8>(*{B-v-lrAsO8lA~-;C9=y)`&!)si!2A!Xe|Lod
+
+diff --git a/Modules/DreamSketcher/PencilKit.swift b/Modules/DreamSketcher/PencilKit.swift
+deleted file mode 100644
+index 7d3b96abeb9bc47f1b1d1c940f0731717b93c586..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1048
+zcmZ9KL1+_E5Qb;Bt(a0ZZ4VU<xQIt%f;CN61e?0iN>oBMLQk3|FJ?8}4ZB;c2SLGt
+zM-{#3MehZ#9*Xp21wHiU#Y4fXU@zXp_|IluV>>WA-@KXkc4ppN@cnxPS*!)IEr40K
+z26%Na$zPV%OY_ojVx!peh(4Hz!WrN^zz~dK5LH7Jgy4hX2P*Wvnit)=>w5|T-otri
+zr8?unbCP3S@Vzh!mg-SR`*fb`Rs06gA@M89tGn&88=VU8yUmDFypCip)Pi#D4)nHY
+z2X;Sn5Osz#0EqTa&U4j${}nyl<-ghEfByD-SNzK!|IUFIaa`B53U3Yi75W|e6Z!`_
+zg8sP%9!7B^F>JTqe>@D=z)TT}<rtVnTV@00^89$_30TeCh3=`>Q9t%u{$*f8(`~D>
+znM`Jc&%*lETHW;`KWtgEj^0m|cSrgDcIx}|<Mj&s6S603+jhw=71K`6DWuP2^E2tf
+zMSC(`w5O&@`N>>9e>$godCYsDzi`q2TW0=$2KI>Xwd>WnD~?}ZT2x+ixq*+{bX8DR
+z5Bj~7S4_%rK4#PK+y&syyqLA<8N@H-JVXazE&TUyx7+0!SSFzS%Adv_-Z3~O!6djM
+zJPn=}z5!kqu7aNk-voDrO^fK9+~E*-Ro0W>HQ`b4w(uBuQ+OP_C2WCHa!wYk&o|bI
+po=MIq7@=6k)`{NAy0O{MPlEZquuN=Yy@zxhye#L>n)IkG{13oWb~XS2
+
+diff --git a/Modules/DreamSketcher/journalEntryView.swift b/Modules/DreamSketcher/journalEntryView.swift
+deleted file mode 100644
+index 0610737ccd61e3d47a67b9effcf34c27b75adc74..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1056
+zcmZ9K&ubG=5XWcJR2qnqHey8u7s=6>U`><tqG>l$sg@8;(UYdhhHh<k!|sOKgAfnB
+z3H|^<^yJMypx`x!Vg)ZAgnHLQZhBDgWc<!%USm5jJD+(o^LF06x8k}F2-2!~p)G(}
+z`(wNsP4Jhc^|Ue{kL?zR9#JoXD4a3Q1B}CH8d24^JRf{ae9!V-r{)Cr)?CLzfNMB!
+z(X!e};fmzw^RD9uUZ)=TbVTLZPT6e`oe+P`?RZXYz2pSm=CW;VT<|ySW<Yd?<0#^W
+zbts>~gx(iz!%je>=+~bEK$L&}E_XljU(%xk{+mPo$GztV;-3!r?~^aWxaw&e-VXE&
+z^gHwyG>RD<hjI@*l;UnIZuF1torJ4lwg`oC7R;h7vxat263#vbtC&xr&NMvHDE3?a
+zrJ<l{uUnThnM|Db!urix-F5=kU)2{(RZr!&r}-ZD`}^?i^%ne;)MO3AC>f<<+RT}S
+z^rdWmE?u~0%%qFP>})ANlgsBX=G0jpa}D$dF8qJX%>U28o)TWVRju4G-Fl~GIl=V?
+zK6cZ#yhUqsbe5&92<12*vuQZ?3UGg3%u3V@!Y6VCq5`lw{`+?@7;q0P(@=ix&q5FH
+z8Jv<}0(?jKDtJNoHn=NX1wRp920s*z=y->6hvVRFSx<m>geSp&gr~q?g_GdEuntbi
+wK3TBZU+WRQlAK8}LZM9ch~CM%_IZ?_0P}lcnf^)C9wMCscV+)_gt~$7KPg*z^8f$<
+
+diff --git a/README.md b/README.md
+index e1870a3eb9a0e8a5d25a57dd0ed26510f7427203..b76b20116d193e762f8232c3b44685afc8c3f7eb 100644
+--- a/README.md
++++ b/README.md
+@@ -1,32 +1,32 @@
+ # 🧭 KinPod — Privacy-First Family Companion
+ # KinPod
+ ## 🗝️ Name Substitution Ritual
+ 
+ - All code, UI text, and system references should default to **“KinPod”** as the Family Pod’s name.
+-- “Buddy Beacon” is deprecated as a container name — it may appear as a Companion’s default guardian personality but is not the Pod name.
+-- Developers must search-and-replace any “Buddy Beacon” labels in:
++- Avoid using the deprecated container name. Always refer to the app as **KinPod**.
++- Developers must replace any outdated container references with "KinPod" in:
+   - Local DB schema
+   - UI strings
+   - System logs
+   - Orchestration layer docs
+ 
+ ✅ Use “KinPod” for the container.
+ ✅ Use “Buddy” for the default guardian personality only.
+ ✅ Personality name can be changed during or after Imprint Zero.
+ ✅ Imprint Zero remains optional — fallback is default “Buddy” until personalized.
+ 
+ 🗝️🌙✨
+   Your playful task buddy. Reveals tiny adventures and helps you commit.
+ - Local Gemma handles tasks, sensory checks, vision chores.
+ - iCloud Shared Album stores raw photos — no legal liability for you.
+ - Groq orchestration only sees text summaries.
+ - Kids can chat within bounded topics parents approve.
+ - Family sharing covers up to 6 people.
+ - Parents can monitor, approve, and redirect usage.
+ # 🧭 KinPod — Mythic Family Snapshot (Round 3)
+ 
+ - Shared Quest Ritual
+ - Gamified chores & rewards
+ - Voting & governance
+ - Family Chatroom (non-LLM, human-led)
+ - Private Messaging + Semantic Translation
+diff --git a/UIViews/MainView.swift b/UIViews/MainView.swift
+index 9c4f47925082ec692be222c1f0e3a9b3cb3eaeae..734bfb02d3d3fb17bf519737f750dd5d5446645c 100644
+--- a/UIViews/MainView.swift
++++ b/UIViews/MainView.swift
+@@ -1,33 +1,41 @@
+ // UIViews/MainView.swift
+ 
+ // UIViews/MainView.swift
+ 
+ import SwiftUI
+ 
+ struct MainView: View {
+     @State private var selectedMode: GameMode = .normal
+ 
+     var body: some View {
+         NavigationView {
+             VStack(spacing: 40) {
+                 GameModeSelectorView(selectedMode: $selectedMode)
+ 
+                 NavigationLink(destination: LorekeeperView()) {
+                     Text("Open Lorekeeper")
+                         .padding()
+                         .background(Color.green)
+                         .foregroundColor(.white)
+                         .cornerRadius(8)
+                 }
++
++                NavigationLink(destination: DreamSketcherView()) {
++                    Text("DreamSketcher")
++                        .padding()
++                        .background(Color.orange)
++                        .foregroundColor(.white)
++                        .cornerRadius(8)
++                }
+             }
+             .navigationTitle("KinPod")
+             .padding()
+         }
+     }
+ }
+ 
+ struct MainView_Previews: PreviewProvider {
+     static var previews: some View {
+         MainView()
+     }
+ }
