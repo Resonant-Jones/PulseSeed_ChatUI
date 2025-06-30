@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+PyQt5
+pynput
+python-dotenv
