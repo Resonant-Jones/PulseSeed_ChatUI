@@ -7,7 +7,11 @@ class Settings(BaseSettings):
 
     groq_api_key: str | None = None
     elevenlabs_api_key: str | None = None
-    whisper_api_url: str | None = None
+    openai_api_key: str | None = None  # For OpenAI services if used (e.g. Whisper API)
+    whisper_api_url: str | None = None # For self-hosted or other Whisper endpoints
+
+    llm_engine: str = "groq"  # Default LLM engine
+    tts_engine: str = "elevenlabs"  # Default TTS engine
 
     enable_stt: bool = True
     enable_tts: bool = True
